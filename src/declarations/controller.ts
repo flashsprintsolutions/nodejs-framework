@@ -1,11 +1,10 @@
-import { injectable, interfaces } from 'inversify';
+import { injectable } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { Base } from './base';
 import { getContainer } from './cache-config';
 import { Service } from './service';
 import { Util } from './util';
 import { Repository } from './repository';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 @injectable()
 export class Controller extends Base {

@@ -1,11 +1,9 @@
-import { interfaces } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { getContainer } from '../declarations/cache-config';
 import { loadInContainer } from '../declarations/global-container';
 import { Repository } from '../declarations/repository';
 import { Dependency } from '../declarations/dependency';
 import { processClassConfig } from '../common/class-config';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 export function repository<
   T extends new() => Repository
