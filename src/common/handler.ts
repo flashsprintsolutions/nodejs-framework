@@ -27,10 +27,8 @@ function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>, 
     return (request: express.Request, response: express.Response, next: NextFunction): void => {
       try {
         controllerClassMiddleware.handler(request)
-          .then(() => {
-            next();
-            return 0;
-          })
+          // eslint-disable-next-line promise/no-callback-in-promise
+          .then(() => next())
           .catch((error) => {
             throw error as Error;
           });
