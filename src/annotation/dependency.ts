@@ -1,6 +1,6 @@
+import { interfaces } from 'inversify';
 import { Dependency } from '../declarations/dependency';
 import { Repository } from '../declarations/repository';
-import { interfaces } from 'inversify';
 import { processClassConfig } from '../common/class-config';
 
 type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;

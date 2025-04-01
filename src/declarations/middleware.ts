@@ -23,6 +23,7 @@ export abstract class Middleware extends Base {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
         this.handler(req)
+          // eslint-disable-next-line promise/no-callback-in-promise
           .then(() => next())
           .catch((error) => this.error(error as Error, req, res, next));
       } catch (error) {
