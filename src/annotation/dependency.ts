@@ -1,9 +1,7 @@
-import { interfaces } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { Dependency } from '../declarations/dependency';
 import { Repository } from '../declarations/repository';
 import { processClassConfig } from '../common/class-config';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 export function dependency<
   R extends Repository,

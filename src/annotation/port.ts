@@ -1,10 +1,8 @@
-import { interfaces } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { v4 as uuid } from 'uuid';
 import { isAbstractClassWithOnlyAbstractMethods } from '../common/validation';
 import { Port } from '../declarations/port';
 import { SDK } from '../declarations/s-d-k';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 export function port<
   T extends SDK,

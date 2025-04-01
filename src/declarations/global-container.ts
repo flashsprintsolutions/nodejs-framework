@@ -1,8 +1,7 @@
 import 'reflect-metadata';
-import { Container, injectable, interfaces } from 'inversify';
+import { Container, injectable } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { setContainer } from './cache-config';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 const serviceContainer = new Container();
 const middlewareContainer = new Container();

@@ -1,4 +1,5 @@
-import { Container, injectable, interfaces } from 'inversify';
+import { Container, injectable } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { Base } from './base';
 import { getConfig, getContainer } from './cache-config';
 import { Port } from './port';
@@ -6,8 +7,6 @@ import { Repository } from './repository';
 import { SDK } from './s-d-k';
 import { Util } from './util';
 import { Dependency } from './dependency';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 @injectable()
 export class Service<R extends Repository = undefined> extends Base {

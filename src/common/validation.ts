@@ -1,6 +1,4 @@
-import { interfaces } from 'inversify';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
+import { ServiceIdentifier } from '@inversifyjs/common';
 
 function isAbstractPrototype(prototype: unknown): boolean {
   const propertyNames = Object.getOwnPropertyNames(prototype);
