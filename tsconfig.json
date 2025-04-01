@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "rootDir": "./",
+    "module": "commonjs",
+    "outDir": "dist",
+    "removeComments": false,
+    "target": "ES2019",
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "lib": ["es2019", "dom"],
+    "types": ["jest", "node"],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": ["./node_modules/@types/"],
+    "strict": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "noImplicitThis": false
+  },
+  "exclude": [
+    "node_modules",
+    "typings",
+    "**/*.js"
+  ],
+  "filesGlob": [],
+  "awesomeTypescriptLoaderOptions": {
+    "resolveGlobs": true,
+    "forkChecker": true
+  }
+}
