@@ -41,7 +41,7 @@ jobs:
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
         npm run build
         cd dist
-        npm publish
+        npm publish --access=public
         cd ..
         git push
         echo "TAG_NAME=$(VERSION)" >> $GITHUB_OUTPUT
@@ -63,6 +63,6 @@ jobs:
       id: create_github_package
       run: |
         ls -lah
-        npm publish --registry=https://npm.pkg.github.com/
+        npm publish --access=public --registry=https://npm.pkg.github.com/
       env:
         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
