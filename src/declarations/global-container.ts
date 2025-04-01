@@ -33,7 +33,7 @@ function loadInContainer<T>(
     injectable()(target);
   }
   if (config.isSingleton === undefined) {
-    config.isSingleton = true;
+    Object.assign(config, { isSingleton: true });
   }
   if (config.isSingleton) {
     container.bind(bind).to(target).inSingletonScope();

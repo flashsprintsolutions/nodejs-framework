@@ -47,7 +47,7 @@ export class Application extends Base {
 
   private startServer(applicationConfig: ApplicationConfig & { app: Express; server: http.Server }): void {
     applicationConfig.server.listen(applicationConfig.port, applicationConfig.ip, () => {
-      // eslint-disable-next-line no-console,no-undef
+      // eslint-disable-next-line no-console
       console.log('Express server listening on %d, listening on "%s"', applicationConfig.port, applicationConfig.ip);
       this.afterServerStart();
     });
