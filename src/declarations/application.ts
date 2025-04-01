@@ -3,9 +3,13 @@
 import * as http from 'http';
 import { Server } from 'http';
 import { Express, NextFunction, Request, Response, Router } from 'express';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { ApplicationConfig } from '../annotation/application';
 import { Base } from './base';
-import { getConfig } from './cache-config';
+import { getConfig, getContainer } from './cache-config';
+import { Util } from './util';
+import { Repository } from './repository';
+import { Service } from './service';
 
 export class Application extends Base {
   static getApp<T extends typeof Application>(this: T): Express {
@@ -39,6 +43,14 @@ export class Application extends Base {
 
   errorHandler(error: Error, request: Request, response: Response, nextFunction: NextFunction): void {
     nextFunction();
+  }
+
+  protected getService<R2 extends Repository, T extends Service<R2>>(ServiceClass: ServiceIdentifier<T>): T {
+    return getContainer('service').get<T>(ServiceClass);
+  }
+
+  protected getUtil<T extends Util>(UtilClass: ServiceIdentifier<T>): T {
+    return getContainer('util').get<T>(UtilClass);
   }
 
   private registerApplicationRoutes(app: Express, routes: Router, pathPrefix: string): void {

@@ -24,12 +24,15 @@ import { Service } from './src/declarations/service';
 import { Util } from './src/declarations/util';
 import { Dependency } from './src/declarations/dependency';
 import { dependency } from './src/annotation/dependency';
+import { application } from './src/annotation/application';
+import { Application } from './src/declarations/application';
 
 function getMiddleware<T extends Middleware>(MiddlewareClass: ServiceIdentifier<T>): T {
   return getContainer('middleware').get(MiddlewareClass);
 }
 
 export {
+  application,
   controller,
   dependency,
   db,
@@ -43,6 +46,7 @@ export {
   routeCompiler,
   service,
   util,
+  Application,
   Controller,
   Dependency,
   DELETE,
