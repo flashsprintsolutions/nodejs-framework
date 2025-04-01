@@ -7,7 +7,7 @@
     "lint": "node_modules/eslint/bin/eslint.js src",
     "test": "jest",
     "jest:coverage": "jest --coverage",
-    "build": "mkdir -p dist; cd dist; rm -rf *;rm -rf .github; cd ..;node_modules/typescript/bin/tsc -p ./tsconfig-build.json; cp package*.json dist; cp -r .github dist/"
+    "build": "mkdir -p dist; cd dist; rm -rf *;rm -rf .github; cd ..;node_modules/typescript/bin/tsc -p ./tsconfig-build.json; cp package*.json dist; cp -r .github dist/; cp .npmrc dist/.npmrc"
   },
   "repository": {
     "type": "git",

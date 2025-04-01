@@ -13,11 +13,6 @@ jobs:
       cancel-in-progress: true
     outputs:
       status: ${{ steps.package-lock-check.outputs.status }}
-    services:
-      cache-http:
-        image: healloinc/cache-http:latest
-        volumes:
-          - /home/ubuntu/github-action-runner/cache:/app/assets
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -26,15 +21,7 @@ jobs:
       - name: Node Version
         run: node -v
       - name: NPM Install
-        uses: yog27ray/action-http-cache@v1
-        with:
-          version: 20.10.0
-          lock_file: package-lock.json
-          install_command: npm ci
-          destination_folder: node_modules
-          ignore_fields: "version,packages[\"\"].version"
-          cache_http_api: "http://cache-http"
-          http_proxy: ""
+        run: npm ci
       - name: package-lock.json check
         id: package-lock-check
         run: |
@@ -66,25 +53,13 @@ jobs:
       cancel-in-progress: true
     if: ${{ needs.npm-update.outputs.status == 'success' }}
     needs: [npm-update]
-    strategy:
-      fail-fast: false
-      matrix:
-        mongodb-version: [ 6.0.2 ]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.pat_github}}
       - name: NPM Install
-        uses: yog27ray/action-http-cache@v1
-        with:
-          version: 20.10.0
-          lock_file: package-lock.json
-          install_command: npm ci
-          destination_folder: node_modules
-          ignore_fields: "version,packages[\"\"].version"
-          cache_http_api: "http://cache-http"
-          http_proxy: ""
+        run: npm ci
       - run: npm run lint
       - run: node_modules/typescript/bin/tsc -p ./
       - run: rm -r dist
