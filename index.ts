@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { interfaces } from 'inversify';
+import { ServiceIdentifier } from '@inversifyjs/common';
 import { controller } from './src/annotation/controller';
 import { db } from './src/annotation/db';
 import { middleware } from './src/annotation/middleware';
@@ -24,8 +24,6 @@ import { Service } from './src/declarations/service';
 import { Util } from './src/declarations/util';
 import { Dependency } from './src/declarations/dependency';
 import { dependency } from './src/annotation/dependency';
-
-type ServiceIdentifier<T> = interfaces.ServiceIdentifier<T>;
 
 function getMiddleware<T extends Middleware>(MiddlewareClass: ServiceIdentifier<T>): T {
   return getContainer('middleware').get(MiddlewareClass);
