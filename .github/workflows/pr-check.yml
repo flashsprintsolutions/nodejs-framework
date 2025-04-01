@@ -3,7 +3,7 @@ run-name: ${{ github.event.number }} 🚀 ${{ github.event.pull_request.title }}
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   npm-update:
