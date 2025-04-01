@@ -33,7 +33,7 @@ jobs:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
     - name: Update package
-      id: update_package
+      id: version
       run: |
         npm ci
         git config --global user.email "yog27ray@example.com"
