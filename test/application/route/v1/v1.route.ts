@@ -13,4 +13,5 @@ import { Sub2Route } from './sub-route-2/sub-2.route';
   controller: V1Controller,
   middleware: [FirstMiddleware],
 })
-export class V1Route extends Route {}
+export class V1Route extends Route {
+}

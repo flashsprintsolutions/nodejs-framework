@@ -45,7 +45,7 @@ export class Application extends Base {
     nextFunction();
   }
 
-  protected getService<R2 extends Repository, T extends Service<R2>>(ServiceClass: ServiceIdentifier<T>): T {
+  protected getService<R extends Repository, T extends Service<R>>(ServiceClass: ServiceIdentifier<T>): T {
     return getContainer('service').get<T>(ServiceClass);
   }
 

@@ -11,9 +11,11 @@ export declare type ErrorHandler = (error: Error, request: Request, response: Re
 
 export declare interface RouteMethodConfig { middleware?: Array<new () => Middleware>; }
 
-export declare type RequestMethodPropertyDescriptor = TypedPropertyDescriptor<(
-  request: express.Request,
-  response: express.Response) => Promise<void>>;
+export declare interface RouteResponse<T = unknown> { response: T; status?: 'success' | 'failure'; statusCode?: number; }
+
+export declare type RequestMethod<T = unknown> = (request: express.Request) => Promise<RouteResponse<T>>;
+
+export declare type RequestMethodPropertyDescriptor<T = unknown> = TypedPropertyDescriptor<RequestMethod<T>>;
 
 declare type RouteWithCompileDate = Route & { routes?: Array<RouteType & { middlewareClass?: Array<new () => Middleware> }> };
 
@@ -89,7 +91,10 @@ export function generateControllerRoutes(
       ...routeType.requestHandler,
       (request: Request, response: Response, next: NextFunction): void => {
 
-        (currentRoute.controller[routeType.classMethod] as (req: Request, res: Response) => Promise<void>)(request, response)
+        (currentRoute.controller[routeType.classMethod] as RequestMethod)(request)
+          .then((data: RouteResponse) =>  {
+            response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
+          })
           .catch((error: Error) => errorHandler(error, request, response, next))
           .catch((error: Error) => handleErrorResponse(response, error));
       },

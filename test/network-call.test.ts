@@ -11,7 +11,7 @@ describe('Application', () => {
         uri: 'http://localhost:9000/v1/subRoute1/route1',
         responseJson: true,
       });
-      expect(response).toEqual({ success: 'Sub1ControllerRoute1' });
+      expect(response).toEqual({ status: 'success', data: { success: 'Sub1ControllerRoute1' } });
       expect(getCallCount()).toEqual({
         Sub1ControllerRoute1: 1,
         ControllerService1ServiceRoute1Call: 1,
@@ -49,7 +49,7 @@ describe('Application', () => {
         body: { body: 'test' },
         responseJson: true,
       });
-      expect(response).toEqual({ success: 'Sub1ControllerRoute2' });
+      expect(response).toEqual({ status: 'failure', data: { class: 'Sub1ControllerRoute2' } });
       expect(getCallCount()).toEqual({
         Sub1ControllerRoute2: 1,
         ControllerService1ServiceRoute1Call: 1,
@@ -64,7 +64,7 @@ describe('Application', () => {
         body: { body: 'test' },
         responseJson: true,
       });
-      expect(response).toEqual({ success: 'Sub1ControllerRoute1', params: { id: 'id' } });
+      expect(response).toEqual({ status: 'success', data: { success: 'Sub1ControllerRoute1', params: { id: 'id' } } });
       expect(getCallCount()).toEqual({
         Sub2ControllerRoute1: 1,
         ControllerService2ServiceRoute1Call: 1,
@@ -79,7 +79,7 @@ describe('Application', () => {
         body: { body: 'test' },
         responseJson: true,
       });
-      expect(response).toEqual({ success: 'Sub2ControllerRoute2' });
+      expect(response).toEqual({ status: 'success', data: { class: 'Sub2ControllerRoute2' } });
       expect(getCallCount()).toEqual({
         Sub2ControllerRoute2: 1,
         ControllerService2ServiceRoute1Call: 1,
