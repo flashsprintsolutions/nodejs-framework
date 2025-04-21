@@ -26,11 +26,13 @@ import { Dependency } from './src/declarations/dependency';
 import { dependency } from './src/annotation/dependency';
 import { application } from './src/annotation/application';
 import { Application } from './src/declarations/application';
+import { RouteResponse } from './src/common/handler';
 
 function getMiddleware<T extends Middleware>(MiddlewareClass: ServiceIdentifier<T>): T {
   return getContainer('middleware').get(MiddlewareClass);
 }
 
+export type { RouteResponse }
 export {
   application,
   controller,
