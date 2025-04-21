@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cureskin/nodejs-framework.git"
+    "url": "git+https://github.com/flashsprintsolutions/nodejs-framework.git"
   },
   "author": "faceapps",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cureskin/nodejs-framework/issues"
+    "url": "https://github.com/flashsprintsolutions/nodejs-framework/issues"
   },
-  "homepage": "https://github.com/cureskin/nodejs-framework#readme",
+  "homepage": "https://github.com/flashsprintsolutions/nodejs-framework#readme",
   "dependencies": {
     "@inversifyjs/common": "1.5.0",
     "inversify": "7.5.1",
