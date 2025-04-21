@@ -94,6 +94,7 @@ export function generateControllerRoutes(
         (currentRoute.controller[routeType.classMethod] as RequestMethod)(request)
           .then((data: RouteResponse) =>  {
             response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
+            return 0;
           })
           .catch((error: Error) => errorHandler(error, request, response, next))
           .catch((error: Error) => handleErrorResponse(response, error));
