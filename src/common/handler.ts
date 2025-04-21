@@ -45,14 +45,14 @@ function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>, 
   });
 }
 
-export function createRequestHandler(
+export function createRequestHandler<T>(
   target_: Route & { routes?: Array<RouteType & { middlewareClass?: Array<new () => Middleware> }> },
   requestMethod: AllowedMethod,
   path: string,
   classMethod: string,
   routeConfig: RouteMethodConfig,
-  propertyDescriptor: RequestMethodPropertyDescriptor,
-): RequestMethodPropertyDescriptor {
+  propertyDescriptor: RequestMethodPropertyDescriptor<T>,
+): RequestMethodPropertyDescriptor<T> {
   const target = target_;
   if (!target.routes) {
     target.routes = [];

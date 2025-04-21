@@ -11,14 +11,14 @@ export class Sub1Controller extends Controller {
   private controllerService1Service = this.getService(ControllerService1Service);
 
   @GET('/route1')
-  route1(req: Request): Promise<RouteResponse> {
+  route1(req: Request): Promise<RouteResponse<{ success: string; }>> {
     incrementCallCount('Sub1ControllerRoute1');
     this.controllerService1Service.route1Call();
     return Promise.resolve({ response: { success: 'Sub1ControllerRoute1' } });
   }
 
   @POST('/route2')
-  route2(req: Request): Promise<RouteResponse> {
+  route2(req: Request): Promise<RouteResponse<{ class: string; body: unknown; }>> {
     incrementCallCount('Sub1ControllerRoute2');
     this.controllerService1Service.route2Call();
     return Promise.resolve({
