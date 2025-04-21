@@ -5,7 +5,7 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js'],
   setupFilesAfterEnv: ['./test/setup.ts'],
   transform: {
-    '^.+\\.ts$': ['ts-jest', { isolatedModules: true }]
+    '^.+\\.ts$': ['ts-jest']
   },
   clearMocks: true,
   verbose: false,

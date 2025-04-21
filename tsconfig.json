@@ -4,6 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
+    "isolatedModules": true,
     "experimentalDecorators": true,
     "sourceMap": true,
     "rootDir": "./",
