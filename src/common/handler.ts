@@ -19,21 +19,17 @@ export declare type RequestMethodPropertyDescriptor<T = unknown> = TypedProperty
 
 declare type RouteWithCompileDate = Route & { routes?: Array<RouteType & { middlewareClass?: Array<new () => Middleware> }> };
 
-function handleErrorResponse(response: Response, error: Error): void {
+export function handleErrorResponse(response: Response, error: Error): void {
   response.status(400).send(`Internal Server error. ${error.message}`);
 }
 
 function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>, errorHandler?: ErrorHandler): Array<RequestHandler> {
   return ClassMiddlewares.map((ClassMiddleware): RequestHandler => {
     const controllerClassMiddleware = getContainer('middleware').get<Middleware>(ClassMiddleware);
-    return (request: express.Request, response: express.Response, next: NextFunction): void => {
+    return async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
       try {
-        controllerClassMiddleware.handler(request)
-          // eslint-disable-next-line promise/no-callback-in-promise
-          .then(() => next())
-          .catch((error) => {
-            throw error as Error;
-          });
+        await controllerClassMiddleware.handler(request);
+        next();
       } catch (error) {
         if (errorHandler) {
           errorHandler(error as Error, request, response, next);
@@ -89,15 +85,13 @@ export function generateControllerRoutes(
     requestHandler: [
       ...createMiddlewareHandler(routeConfig.middleware || [], errorHandler),
       ...routeType.requestHandler,
-      (request: Request, response: Response, next: NextFunction): void => {
-
-        (currentRoute.controller[routeType.classMethod] as RequestMethod)(request)
-          .then((data: RouteResponse) =>  {
-            response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
-            return 0;
-          })
-          .catch((error: Error) => errorHandler(error, request, response, next))
-          .catch((error: Error) => handleErrorResponse(response, error));
+      async (request: Request, response: Response, next: NextFunction): Promise<void> => {
+        try {
+          const data: RouteResponse = await (currentRoute.controller[routeType.classMethod] as RequestMethod)(request);
+          response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
+        } catch (error) {
+          errorHandler(error as Error, request, response, next)
+        }
       },
     ],
   }));

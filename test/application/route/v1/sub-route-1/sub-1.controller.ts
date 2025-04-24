@@ -10,6 +10,12 @@ import { RouteResponse } from '../../../../../src/common/handler';
 export class Sub1Controller extends Controller {
   private controllerService1Service = this.getService(ControllerService1Service);
 
+  @GET('/error')
+  error(req: Request): Promise<RouteResponse<{ success: string; }>> {
+    incrementCallCount('Sub1ControllerError');
+    throw Error('error triggered');
+  }
+
   @GET('/route1')
   route1(req: Request): Promise<RouteResponse<{ success: string; }>> {
     incrementCallCount('Sub1ControllerRoute1');

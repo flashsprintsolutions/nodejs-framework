@@ -11,6 +11,7 @@ import { Util } from './util';
 import { Repository } from './repository';
 import { Service } from './service';
 import { RouteType } from './route-type';
+import { handleErrorResponse } from '../common/handler';
 
 export class Application extends Base {
   static getApp<T extends typeof Application>(this: T): Express {
@@ -42,8 +43,9 @@ export class Application extends Base {
 
   afterServerStart(): void {}
 
-  errorHandler(error: Error, request: Request, response: Response, nextFunction: NextFunction): void {
-    nextFunction();
+  errorHandler(error: Error, _request: Request, response: Response, _nextFunction: NextFunction): void {
+    console.log(error);
+    handleErrorResponse(response, error);
   }
 
   protected getService<R extends Repository, T extends Service<R>>(ServiceClass: ServiceIdentifier<T>): T {

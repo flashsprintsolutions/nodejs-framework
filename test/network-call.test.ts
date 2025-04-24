@@ -18,7 +18,7 @@ describe('Application', () => {
       });
     });
 
-    it('Should call the application route1 of subRout1 method', async () => {
+    it('Should call the application error route of subRout1 method', async () => {
       const response = await httpClient.rp({
         method: 'GET',
         uri: 'http://localhost:9000/v1/subRoute1/route1',
@@ -30,6 +30,20 @@ describe('Application', () => {
         ControllerService1ServiceRoute1Call: 1,
         Service1ServiceDummyCall: 1,
       });
+    });
+
+    it('Should call the application route1 of subRout1 method', async () => {
+      try {
+        await httpClient.rp({
+          method: 'GET',
+          uri: 'http://localhost:9000/v1/subRoute1/error',
+        });
+        throw Error('should not reach here.');
+      } catch (_error) {
+        const error = _error as Error;
+        expect(error.message).toEqual('400 - Internal Server error. error triggered');
+        expect(getCallCount()).toEqual({ Sub1ControllerError: 1 });
+      }
     });
 
     it('Should fail call the application route1 of subRout1 method when method is invalid', async () => {
