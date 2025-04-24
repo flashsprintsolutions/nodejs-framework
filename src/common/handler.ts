@@ -90,7 +90,7 @@ export function generateControllerRoutes(
           const data: RouteResponse = await (currentRoute.controller[routeType.classMethod] as RequestMethod)(request);
           response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
         } catch (error) {
-          errorHandler(error as Error, request, response, next)
+          errorHandler(error as Error, request, response, next);
         }
       },
     ],

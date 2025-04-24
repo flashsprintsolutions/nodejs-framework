@@ -1,4 +1,3 @@
-import http from 'http';
 import express, { Express } from 'express';
 import { Application } from '../declarations/application';
 import { setConfig } from '../declarations/cache-config';

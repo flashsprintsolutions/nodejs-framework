@@ -2,16 +2,16 @@
 /* tslint:disable:no-empty */
 import * as http from 'http';
 import { Server } from 'http';
-import { Express, NextFunction, Request, Response, Router } from 'express';
+import { Express, NextFunction, Request, Response } from 'express';
 import { ServiceIdentifier } from '@inversifyjs/common';
 import { ApplicationConfig } from '../annotation/application';
+import { handleErrorResponse } from '../common/handler';
 import { Base } from './base';
 import { getConfig, getContainer } from './cache-config';
 import { Util } from './util';
 import { Repository } from './repository';
 import { Service } from './service';
 import { RouteType } from './route-type';
-import { handleErrorResponse } from '../common/handler';
 
 export class Application extends Base {
   static getApp<T extends typeof Application>(this: T): Express {
@@ -44,7 +44,6 @@ export class Application extends Base {
   afterServerStart(): void {}
 
   errorHandler(error: Error, _request: Request, response: Response, _nextFunction: NextFunction): void {
-    console.log(error);
     handleErrorResponse(response, error);
   }
 
@@ -64,10 +63,11 @@ export class Application extends Base {
   }
 
   private startServer(applicationConfig: ApplicationConfig & { app: Express; server?: Server; }): void {
-    applicationConfig.server = applicationConfig.app.listen(applicationConfig.port, applicationConfig.ip, () => {
+    const server = applicationConfig.app.listen(applicationConfig.port, applicationConfig.ip, () => {
       // eslint-disable-next-line no-console
       console.log('Express server listening on %d, listening on "%s"', applicationConfig.port, applicationConfig.ip);
       this.afterServerStart();
     });
+    Object.assign(applicationConfig, { server });
   }
 }
