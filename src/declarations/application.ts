@@ -10,6 +10,7 @@ import { getConfig, getContainer } from './cache-config';
 import { Util } from './util';
 import { Repository } from './repository';
 import { Service } from './service';
+import { RouteType } from './route-type';
 
 export class Application extends Base {
   static getApp<T extends typeof Application>(this: T): Express {
@@ -53,12 +54,15 @@ export class Application extends Base {
     return getContainer('util').get<T>(UtilClass);
   }
 
-  private registerApplicationRoutes(app: Express, routes: Router, pathPrefix: string): void {
-    app.use(pathPrefix || '', routes);
+  private registerApplicationRoutes(app: Express, routes: Array<RouteType>, pathPrefix: string = ''): void {
+    routes.forEach((route) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      app[(route.method || 'use').toLowerCase().trim()](`${pathPrefix}${route.path}`, ...route.requestHandler);
+    });
   }
 
-  private startServer(applicationConfig: ApplicationConfig & { app: Express; server: http.Server }): void {
-    applicationConfig.server.listen(applicationConfig.port, applicationConfig.ip, () => {
+  private startServer(applicationConfig: ApplicationConfig & { app: Express; server?: Server; }): void {
+    applicationConfig.server = applicationConfig.app.listen(applicationConfig.port, applicationConfig.ip, () => {
       // eslint-disable-next-line no-console
       console.log('Express server listening on %d, listening on "%s"', applicationConfig.port, applicationConfig.ip);
       this.afterServerStart();

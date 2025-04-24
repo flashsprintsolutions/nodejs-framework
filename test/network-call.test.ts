@@ -5,6 +5,19 @@ const httpClient = new HttpClient();
 
 describe('Application', () => {
   describe('Network Call', () => {
+    it('Should call the application route1 method', async () => {
+      const response = await httpClient.rp({
+        method: 'GET',
+        uri: 'http://localhost:9000/v1/route1',
+        responseJson: true,
+      });
+      expect(response).toEqual({ status: 'success', data: { success: 'V1ControllerRoute1' } });
+      expect(getCallCount()).toEqual({
+        V1ControllerRoute1: 1,
+        FirstMiddlewareHandler: 1,
+      });
+    });
+
     it('Should call the application route1 of subRout1 method', async () => {
       const response = await httpClient.rp({
         method: 'GET',

@@ -14,9 +14,7 @@ export declare type ApplicationConfig = {
 export function application<T extends Application>(config: ApplicationConfig): (Target: new () => T & { app?: Express }) => void {
   return function decorator(Target: new () => T & { app?: Express }): void {
     const app: Express = express();
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    const server = http.createServer(app);
-    Object.assign(Target, { aopId: setConfig({ ...config, app, server }) });
+    Object.assign(Target, { aopId: setConfig({ ...config, app }) });
 
     new Target();
   };

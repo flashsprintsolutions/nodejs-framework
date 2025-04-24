@@ -2,8 +2,8 @@ import { App } from './application/app';
 import { createStorage, deleteStorage } from './application/visit-count';
 
 afterAll(() => {
-  const server = App.getServer();
-  server.close();
+  const app = App.getServer();
+  app.close();
 });
 
 beforeEach(() => {
