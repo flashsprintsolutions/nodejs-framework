@@ -13,7 +13,7 @@ export declare interface RouteMethodConfig { middleware?: Array<new () => Middle
 
 export declare interface RouteResponse<T = unknown> { response: T; status?: 'success' | 'failure'; statusCode?: number; }
 
-export declare type RequestMethod<T = unknown> = (request: express.Request) => Promise<RouteResponse<T>>;
+export declare type RequestMethod<T = unknown> = (request?: express.Request) => Promise<RouteResponse<T>>;
 
 export declare type RequestMethodPropertyDescriptor<T = unknown> = TypedPropertyDescriptor<RequestMethod<T>>;
 
