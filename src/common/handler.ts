@@ -23,20 +23,12 @@ export function handleErrorResponse(response: Response, error: Error): void {
   response.status(400).send(`Internal Server error. ${error.message}`);
 }
 
-function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>, errorHandler?: ErrorHandler): Array<RequestHandler> {
+function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>): Array<RequestHandler> {
   return ClassMiddlewares.map((ClassMiddleware): RequestHandler => {
     const controllerClassMiddleware = getContainer('middleware').get<Middleware>(ClassMiddleware);
-    return async (request: express.Request, response: express.Response, next: NextFunction): Promise<void> => {
-      try {
-        await controllerClassMiddleware.handler(request);
-        next();
-      } catch (error) {
-        if (errorHandler) {
-          errorHandler(error as Error, request, response, next);
-          return;
-        }
-        throw error;
-      }
+    return async function middlewareHandler(request: express.Request, response: express.Response, next: NextFunction): Promise<void> {
+      await controllerClassMiddleware.handler(request);
+      next();
     };
   });
 }
@@ -83,7 +75,7 @@ export function generateControllerRoutes(
     method: routeType.method,
     classMethod: routeType.classMethod,
     requestHandler: [
-      ...createMiddlewareHandler(routeConfig.middleware || [], errorHandler),
+      ...createMiddlewareHandler(routeConfig.middleware || []),
       ...routeType.requestHandler,
       async (request: Request, response: Response, next: NextFunction): Promise<void> => {
         try {

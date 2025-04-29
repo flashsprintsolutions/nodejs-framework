@@ -46,6 +46,20 @@ describe('Application', () => {
       }
     });
 
+    it('Should fail call when unexpected error occurred in middleware', async () => {
+      try {
+        await httpClient.rp({
+          method: 'GET',
+          uri: 'http://localhost:9000/v1/subRoute1/middlewareError',
+          responseJson: true,
+        });
+        throw new Error('should not reach here');
+      } catch (_error) {
+        const error = _error as Error;
+        expect(error.message).toEqual('400 - Internal Server error. unhandled error');
+      }
+    });
+
     it('Should fail call the application route1 of subRout1 method when method is invalid', async () => {
       try {
         await httpClient.rp({
