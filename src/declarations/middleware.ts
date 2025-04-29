@@ -6,11 +6,16 @@ import { ServiceIdentifier } from '@inversifyjs/common';
 import { Base } from './base';
 import { getContainer } from './cache-config';
 import { Repository } from './repository';
+import { Service } from './service';
 
 @injectable()
 export abstract class Middleware extends Base {
   protected getRepository<T extends Repository>(RepositoryClass: ServiceIdentifier<T>): T {
     return getContainer('repository').get(RepositoryClass);
+  }
+
+  protected getService<R extends Repository, T extends Service<R>>(ServiceClass: ServiceIdentifier<T>): T {
+    return getContainer('service').get<T>(ServiceClass);
   }
 
   error(error: Error & { code?: number; }, _req: Request, res: Response, _next: NextFunction): void {
