@@ -6,6 +6,7 @@ import { Middleware } from '../declarations/middleware';
 import { Route } from '../declarations/route';
 import { AllowedMethod, RouteType } from '../declarations/route-type';
 import { RouteConfig } from '../annotation/route';
+import { deepCopy } from '../util/deep-copy';
 
 export declare type ErrorHandler = (error: Error, request: Request, response: Response, nextFunction: NextFunction) => void;
 
@@ -54,6 +55,40 @@ export function createRequestHandler<T>(
   return propertyDescriptor;
 }
 
+export function transformDateRequest(input: unknown): unknown {
+  if (input === null || input === undefined) {
+    return input;
+  }
+  if (typeof input !== 'object') {
+    return input;
+  }
+  if ((input as { __type: 'Date' }).__type === 'Date' && (input as { iso: string }).iso) {
+    return new Date((input as { iso: string }).iso);
+  }
+  return Object.keys(input).reduce((inputCopy, key) => {
+    // eslint-disable-next-line no-param-reassign
+    inputCopy[key] = transformDateRequest(input[key]);
+    return inputCopy;
+  }, deepCopy(input));
+}
+
+function transformDateResponse(input: unknown): unknown {
+  if (input instanceof Date) {
+    return { __type: 'Date', iso: input.toISOString() };
+  }
+  if (input === null || input === undefined) {
+    return input;
+  }
+  if (typeof input !== 'object') {
+    return input;
+  }
+  return Object.keys(input).reduce((inputCopy, key) => {
+    // eslint-disable-next-line no-param-reassign
+    inputCopy[key] = transformDateResponse(input[key]);
+    return inputCopy;
+  }, deepCopy(input));
+}
+
 export function generateControllerRoutes(
   CurrentRoute: (new() => Route) & { classId?: string; },
   errorHandler: ErrorHandler): Array<RouteType> {
@@ -80,7 +115,10 @@ export function generateControllerRoutes(
       async (request: Request, response: Response, next: NextFunction): Promise<void> => {
         try {
           const data: RouteResponse = await (currentRoute.controller[routeType.classMethod] as RequestMethod)(request);
-          response.status(data.statusCode || 200).json({ status: data.status || 'success', data: data.response });
+          response.status(data.statusCode || 200).json({
+            status: data.status || 'success',
+            data: transformDateResponse(data.response),
+          });
         } catch (error) {
           errorHandler(error as Error, request, response, next);
         }

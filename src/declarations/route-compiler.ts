@@ -1,15 +1,21 @@
 import { NextFunction, Request, Response, RequestHandler } from 'express';
-import { ErrorHandler, generateControllerRoutes } from '../common/handler';
+import { ErrorHandler, generateControllerRoutes, transformDateRequest } from '../common/handler';
 import { Base } from './base';
 import { getConfig } from './cache-config';
 import { Route } from './route';
 import { RouteType } from './route-type';
 
+function transformRequestBody(req: Request, _res: Response, next: NextFunction): Promise<void> {
+  req.body = transformDateRequest(req.body);
+  next();
+  return Promise.resolve();
+}
+
 export class RouteCompiler extends Base {
   private static routes: Array<RouteType>;
 
   static attachErrorHandler(requestHandlers: Array<RequestHandler>, errorHandler: ErrorHandler): Array<RequestHandler> {
-    return requestHandlers.map(
+    const result = requestHandlers.map(
       (requestHandler) => async function routeHandler(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
           await requestHandler(req, res, next);
@@ -17,6 +23,8 @@ export class RouteCompiler extends Base {
           errorHandler(error as Error, req, res, next);
         }
       });
+    result.unshift(transformRequestBody);
+    return result;
   }
 
   static generateRouter(errorHandler: ErrorHandler): Array<RouteType> {

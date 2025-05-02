@@ -1,4 +1,5 @@
 import { Express } from 'express';
+import bodyParser from 'body-parser';
 import { Application } from '../../src/declarations/application';
 import { application } from '../../src/annotation/application';
 import { AppRoutes } from './route/app-routes';
@@ -9,6 +10,11 @@ import { AppRoutes } from './route/app-routes';
   routeCompiler: AppRoutes,
 })
 class App extends Application {
+  beforeRouteRegistration(app: Express): void  {
+    super.beforeRouteRegistration(app);
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json({ limit: '1MB' }));
+  }
 }
 
 const app: Express = App.getApp();
