@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/flashsprintsolutions/nodejs-framework#readme",
   "dependencies": {
-    "@inversifyjs/common": "1.5.0",
+    "@inversifyjs/common": "1.5.2",
     "inversify": "7.7.1",
     "reflect-metadata": "0.2.2",
     "rfdc": "^1.4.1",
