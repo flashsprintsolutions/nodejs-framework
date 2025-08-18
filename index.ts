@@ -32,7 +32,7 @@ function getMiddleware<T extends Middleware>(MiddlewareClass: ServiceIdentifier<
   return getContainer('middleware').get(MiddlewareClass);
 }
 
-export type { RouteResponse }
+export type { RouteResponse };
 export {
   application,
   controller,
