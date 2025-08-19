@@ -1,6 +1,7 @@
 /* tslint:disable:no-empty */
 import * as http from 'http';
 import { Server } from 'http';
+import { AddressInfo } from 'net';
 import { Express, NextFunction, Request, RequestHandler, Response } from 'express';
 import { ServiceIdentifier } from '@inversifyjs/common';
 import { ApplicationConfig } from '../annotation/application';
@@ -69,8 +70,9 @@ export class Application extends Base {
 
   private startServer(applicationConfig: ApplicationConfig & { app: Express; server?: Server; }): void {
     const server = applicationConfig.app.listen(applicationConfig.port, applicationConfig.ip, () => {
+      const address = server.address() as AddressInfo;
       // eslint-disable-next-line no-console
-      console.log('Express server listening on %d, listening on "%s"', applicationConfig.port, applicationConfig.ip);
+      console.log('Express server listening on %d, listening on "%s"', address.port, address.address);
       this.afterServerStart();
     });
     Object.assign(applicationConfig, { server });
