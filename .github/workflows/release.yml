@@ -83,11 +83,7 @@ jobs:
         git config --global user.email "yog27ray@example.com"
         git config --global user.name "Yogendra Singh"
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
-        echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
-
-        npm whoami --registry=https://npm.pkg.github.com || \
-        (echo "::error::npm auth to GitHub Packages failed. Ensure the PAT is classic with write:packages, read:packages, repo and is SSO-authorized for your org."; exit 1)
-
+        #echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
         npm ci
         npm run build
         cd dist
