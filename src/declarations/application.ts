@@ -63,9 +63,10 @@ export class Application extends Base {
     pathPrefix: string = ''): void {
     routes.forEach((route) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const routeValidators = routeValidator ? [routeValidator] : [];
       app[(route.method || 'use').toLowerCase().trim()](
         `${pathPrefix}${route.path}`,
-        ...createMiddlewareHandler(routeValidator ? [routeValidator] : []),
+        ...createMiddlewareHandler(routeValidators),
         ...route.requestHandler);
     });
   }
