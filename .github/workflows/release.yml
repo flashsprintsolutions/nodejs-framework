@@ -68,10 +68,10 @@ jobs:
         scope: '@flashsprintsolutions'
 
     - run: |
-        test -f dist/package.json || (echo "::error::dist/package.json missing"; exit 1)
-        jq -r .name dist/package.json
-        jq -r .version dist/package.json
-        test "$(jq -r .name dist/package.json)" = "@flashsprintsolutions/nodejs-framework" || \
+        test -f package.json || (echo "::error::package.json missing"; exit 1)
+        jq -r .name package.json
+        jq -r .version package.json
+        test "$(jq -r .name package.json)" = "@flashsprintsolutions/nodejs-framework" || \
           (echo "::error::Package name must be @flashsprintsolutions/nodejs-framework"; exit 1)
 
     - name: Check PAT user + org membership (debug)
