@@ -65,34 +65,6 @@ jobs:
       with:
         node-version: '20.x'
         registry-url: 'https://npm.pkg.github.com'
-    - name: Update package
-      id: update_package
-      run: |
-        git config --global user.email "yog27ray@example.com"
-        git config --global user.name "Yogendra Singh"
-        VERSION=$(npm version ${{ github.event.inputs.increment-type }})
-        echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
-        npm ci
-        npm run build
-        cd dist
-        npm publish --access=public
-        cd ..
-        git checkout .npmrc
-    - name: Set env
-      run: echo "TAG_NAME=$(cat package.json| jq -r .version)" >> $GITHUB_OUTPUT
-      id: version
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.pat_github}}
-      with:
-        tag_name: ${{ steps.version.outputs.TAG_NAME }}
-        release_name: Release ${{ steps.version.outputs.TAG_NAME }}
-        body: |
-          Release v-${{ steps.version.outputs.TAG_NAME }}
-        draft: false
-        prerelease: false
     - name: Verify PAT scopes & SSO (API)
       run: |
         set -e
@@ -111,6 +83,34 @@ jobs:
       run: |
         npm whoami --registry=https://npm.pkg.github.com || \
         (echo "::error::npm auth to GitHub Packages failed. Ensure the PAT is classic with write:packages, read:packages, repo and is SSO-authorized for your org."; exit 1)
+
+    - name: Update package
+      id: update_package
+      run: |
+        git config --global user.email "yog27ray@example.com"
+        git config --global user.name "Yogendra Singh"
+        VERSION=$(npm version ${{ github.event.inputs.increment-type }})
+        echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
+        npm ci
+        npm run build
+        cd dist
+        cd ..
+        git checkout .npmrc
+    - name: Set env
+      run: echo "TAG_NAME=$(cat package.json| jq -r .version)" >> $GITHUB_OUTPUT
+      id: version
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.pat_github}}
+      with:
+        tag_name: ${{ steps.version.outputs.TAG_NAME }}
+        release_name: Release ${{ steps.version.outputs.TAG_NAME }}
+        body: |
+          Release v-${{ steps.version.outputs.TAG_NAME }}
+        draft: false
+        prerelease: false
     - name: Create Github package
       id: create_github_package
       run: |
