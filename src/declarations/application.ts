@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* tslint:disable:no-empty */
 import * as http from 'http';
 import { Server } from 'http';
@@ -38,9 +37,9 @@ export class Application extends Base {
     this.startServer(applicationConfig);
   }
 
-  beforeRouteRegistration(app: Express): void {}
+  beforeRouteRegistration(_app: Express): void {}
 
-  afterRouteRegistration(app: Express): void {}
+  afterRouteRegistration(_app: Express): void {}
 
   afterServerStart(): void {}
 
