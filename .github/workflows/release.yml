@@ -67,6 +67,27 @@ jobs:
         registry-url: 'https://npm.pkg.github.com'
         scope: '@flashsprintsolutions'
 
+    - run: |
+        test -f dist/package.json || (echo "::error::dist/package.json missing"; exit 1)
+        jq -r .name dist/package.json
+        jq -r .version dist/package.json
+        test "$(jq -r .name dist/package.json)" = "@flashsprintsolutions/nodejs-framework" || \
+          (echo "::error::Package name must be @flashsprintsolutions/nodejs-framework"; exit 1)
+
+    - name: Check PAT user + org membership (debug)
+      run: |
+        USER=$(curl -s -H "Authorization: token ${{ secrets.pat_github }}" https://api.github.com/user | jq -r .login)
+        echo "PAT user: $USER"
+        curl -s -o /dev/null -w "%{http_code}\n" \
+          -H "Authorization: token ${{ secrets.pat_github }}" \
+          https://api.github.com/orgs/flashsprintsolutions/members/$USER
+        # 204 = is a member, 404 = not a member (needs adding)
+
+    - name: Preflight auth
+      run: npm whoami --registry=https://npm.pkg.github.com
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.pat_github }}  # classic PAT with write:packages, read:packages, repo
+
     - name: Configure npm auth
       run: |
         echo "@flashsprintsolutions:registry=https://npm.pkg.github.com" >> $HOME/.npmrc
