@@ -65,24 +65,6 @@ jobs:
       with:
         node-version: '20.x'
         registry-url: 'https://npm.pkg.github.com'
-    - name: Verify PAT scopes & SSO (API)
-      run: |
-        set -e
-        echo "Checking token scopes..."
-        curl -sI -H "Authorization: token ${{ secrets.pat_github }}" https://api.github.com/user | grep -i ^x-oauth-scopes || true
-        echo "Checking org SSO..."
-        curl -s -H "Authorization: token ${{ secrets.pat_github }}" https://api.github.com/orgs/flashsprintsolutions | jq -r .message || true
-
-    - name: Configure npm auth for GH Packages
-      run: |
-        echo "@flashsprintsolutions:registry=https://npm.pkg.github.com" >> $HOME/.npmrc
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.pat_github }}" >> $HOME/.npmrc
-        echo "always-auth=true" >> $HOME/.npmrc
-
-    - name: Preflight npm auth
-      run: |
-        npm whoami --registry=https://npm.pkg.github.com || \
-        (echo "::error::npm auth to GitHub Packages failed. Ensure the PAT is classic with write:packages, read:packages, repo and is SSO-authorized for your org."; exit 1)
 
     - name: Update package
       id: update_package
@@ -91,6 +73,10 @@ jobs:
         git config --global user.name "Yogendra Singh"
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
         echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
+
+        npm whoami --registry=https://npm.pkg.github.com || \
+        (echo "::error::npm auth to GitHub Packages failed. Ensure the PAT is classic with write:packages, read:packages, repo and is SSO-authorized for your org."; exit 1)
+
         npm ci
         npm run build
         cd dist
