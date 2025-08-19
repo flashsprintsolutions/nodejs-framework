@@ -90,8 +90,8 @@ jobs:
 
     - name: Configure npm auth
       run: |
-        echo "@flashsprintsolutions:registry=https://npm.pkg.github.com" >> $HOME/.npmrc
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.pat_github }}" >> $HOME/.npmrc
+        echo "@flashsprintsolutions:registry=https://npm.pkg.github.com" >> $NPM_CONFIG_USERCONFIG
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.pat_github }}" >> $NPM_CONFIG_USERCONFIG
         echo "always-auth=true" >> $HOME/.npmrc
         echo "|$HOME|"
 
