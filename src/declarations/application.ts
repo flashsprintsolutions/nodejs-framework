@@ -1,17 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* tslint:disable:no-empty */
 import * as http from 'http';
 import { Server } from 'http';
-import { Express, NextFunction, Request, Response } from 'express';
+import { Express, NextFunction, Request, RequestHandler, Response } from 'express';
 import { ServiceIdentifier } from '@inversifyjs/common';
 import { ApplicationConfig } from '../annotation/application';
-import { handleErrorResponse } from '../common/handler';
+import { createMiddlewareHandler, handleErrorResponse } from '../common/handler';
 import { Base } from './base';
 import { getConfig, getContainer } from './cache-config';
 import { Util } from './util';
 import { Repository } from './repository';
 import { Service } from './service';
 import { RouteType } from './route-type';
+import { Middleware } from './middleware';
 
 export class Application extends Base {
   static getApp<T extends typeof Application>(this: T): Express {
@@ -25,21 +25,21 @@ export class Application extends Base {
   constructor() {
     super();
     const applicationConfig = getConfig((this.constructor as { aopId?: string }).aopId) as (
-      ApplicationConfig & { app: Express; server: http.Server });
+      ApplicationConfig & { app: Express; server: http.Server; routeValidator?: new () => Middleware; });
     this.beforeRouteRegistration(applicationConfig.app);
     if (applicationConfig.routeCompiler) {
       const routes = applicationConfig.routeCompiler.generateRouter((error, request, response, nextFunction) => {
         this.errorHandler(error, request, response, nextFunction);
       });
-      this.registerApplicationRoutes(applicationConfig.app, routes, applicationConfig.pathPrefix);
+      this.registerApplicationRoutes(applicationConfig.app, routes, applicationConfig.routeValidator, applicationConfig.pathPrefix);
       this.afterRouteRegistration(applicationConfig.app);
     }
     this.startServer(applicationConfig);
   }
 
-  beforeRouteRegistration(app: Express): void {}
+  beforeRouteRegistration(_app: Express): void {}
 
-  afterRouteRegistration(app: Express): void {}
+  afterRouteRegistration(_app: Express): void {}
 
   afterServerStart(): void {}
 
@@ -55,10 +55,15 @@ export class Application extends Base {
     return getContainer('util').get<T>(UtilClass);
   }
 
-  private registerApplicationRoutes(app: Express, routes: Array<RouteType>, pathPrefix: string = ''): void {
+  private registerApplicationRoutes(
+    app: Express,
+    routes: Array<RouteType>,
+    routeValidator: new () => Middleware,
+    pathPrefix: string = ''): void {
     routes.forEach((route) => {
+      const routeValidatorMiddleware: Array<RequestHandler> = createMiddlewareHandler(routeValidator ? [routeValidator] : []);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      app[(route.method || 'use').toLowerCase().trim()](`${pathPrefix}${route.path}`, ...route.requestHandler);
+      app[(route.method || 'use').toLowerCase().trim()](`${pathPrefix}${route.path}`, ...routeValidatorMiddleware, ...route.requestHandler);
     });
   }
 

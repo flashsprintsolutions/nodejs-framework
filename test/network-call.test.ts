@@ -14,6 +14,7 @@ describe('Application', () => {
       expect(response).toEqual({ status: 'success', data: { success: 'V1ControllerRoute1' } });
       expect(getCallCount()).toEqual({
         V1ControllerRoute1: 1,
+        RouteValidatorMiddleware: 1,
         FirstMiddlewareHandler: 1,
       });
     });
@@ -28,6 +29,7 @@ describe('Application', () => {
       expect(getCallCount()).toEqual({
         Sub1ControllerRoute1: 1,
         ControllerService1ServiceRoute1Call: 1,
+        RouteValidatorMiddleware: 1,
         Service1ServiceDummyCall: 1,
       });
     });
@@ -42,7 +44,7 @@ describe('Application', () => {
       } catch (_error) {
         const error = _error as Error;
         expect(error.message).toEqual('400 - Internal Server error. error triggered');
-        expect(getCallCount()).toEqual({ Sub1ControllerError: 1 });
+        expect(getCallCount()).toEqual({ Sub1ControllerError: 1, RouteValidatorMiddleware: 1 });
       }
     });
 
@@ -93,6 +95,7 @@ describe('Application', () => {
       expect(response).toEqual({ status: 'failure', data: { class: 'Sub1ControllerRoute2', body: { body: 'test' } } });
       expect(getCallCount()).toEqual({
         Sub1ControllerRoute2: 1,
+        RouteValidatorMiddleware: 1,
         ControllerService1ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
       });
@@ -130,6 +133,7 @@ describe('Application', () => {
       expect(response.data.body.inputDateJson.iso).toBeDefined();
       expect(getCallCount()).toEqual({
         Sub2ControllerRoute2Date: 1,
+        RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
       });
@@ -148,6 +152,7 @@ describe('Application', () => {
       });
       expect(getCallCount()).toEqual({
         Sub2ControllerRoute1: 1,
+        RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service1ServiceDummyCall: 1,
       });
@@ -166,6 +171,7 @@ describe('Application', () => {
       });
       expect(getCallCount()).toEqual({
         Sub2ControllerRoute2: 1,
+        RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
       });

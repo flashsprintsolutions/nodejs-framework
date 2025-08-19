@@ -24,7 +24,7 @@ export function handleErrorResponse(response: Response, error: Error): void {
   response.status(400).send(`Internal Server error. ${error.message}`);
 }
 
-function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>): Array<RequestHandler> {
+export function createMiddlewareHandler(ClassMiddlewares: Array<new () => Middleware>): Array<RequestHandler> {
   return ClassMiddlewares.map((ClassMiddleware): RequestHandler => {
     const controllerClassMiddleware = getContainer('middleware').get<Middleware>(ClassMiddleware);
     return async function middlewareHandler(request: express.Request, response: express.Response, next: NextFunction): Promise<void> {
