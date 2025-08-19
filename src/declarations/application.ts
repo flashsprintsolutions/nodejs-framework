@@ -2,7 +2,7 @@
 /* tslint:disable:no-empty */
 import * as http from 'http';
 import { Server } from 'http';
-import { Express, NextFunction, Request, Response } from 'express';
+import { Express, NextFunction, Request, RequestHandler, Response } from 'express';
 import { ServiceIdentifier } from '@inversifyjs/common';
 import { ApplicationConfig } from '../annotation/application';
 import { createMiddlewareHandler, handleErrorResponse } from '../common/handler';
@@ -62,12 +62,9 @@ export class Application extends Base {
     routeValidator: new () => Middleware,
     pathPrefix: string = ''): void {
     routes.forEach((route) => {
+      const routeValidatorMiddleware: Array<RequestHandler> = createMiddlewareHandler(routeValidator ? [routeValidator] : []);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      const routeValidators = routeValidator ? [routeValidator] : [];
-      app[(route.method || 'use').toLowerCase().trim()](
-        `${pathPrefix}${route.path}`,
-        ...createMiddlewareHandler(routeValidators),
-        ...route.requestHandler);
+      app[(route.method || 'use').toLowerCase().trim()](`${pathPrefix}${route.path}`, ...routeValidatorMiddleware, ...route.requestHandler);
     });
   }
 
