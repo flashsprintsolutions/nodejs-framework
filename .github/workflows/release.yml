@@ -46,6 +46,7 @@ jobs:
         git push
       env:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
   release-github:
     runs-on: ubuntu-latest
     permissions:
@@ -69,14 +70,16 @@ jobs:
     - name: Update package
       id: update_package
       run: |
-        npm ci
         git config --global user.email "yog27ray@example.com"
         git config --global user.name "Yogendra Singh"
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
+        echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
+        npm ci
         npm run build
         cd dist
         npm publish --access=public
         cd ..
+        git checkout .npmrc
         git push
     - name: Set env
       run: echo "TAG_NAME=$(cat package.json| jq -r .version)" >> $GITHUB_OUTPUT
