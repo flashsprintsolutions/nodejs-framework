@@ -67,14 +67,10 @@ jobs:
         registry-url: 'https://npm.pkg.github.com'
         scope: '@flashsprintsolutions'
 
-    - name: Preflight auth
-      run: npm whoami --registry=https://npm.pkg.github.com
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.pat_github }}  # classic PAT with write:packages, read:packages, repo
-
     - name: Update package
       id: update_package
       run: |
+        npm whoami --registry=https://npm.pkg.github.com
         git config --global user.email "yog27ray@example.com"
         git config --global user.name "Yogendra Singh"
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
@@ -83,6 +79,8 @@ jobs:
         cd dist
         cd ..
         git checkout .npmrc
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.pat_github }}  # classic PAT with write:packages, read:packages, repo
     - name: Set env
       run: echo "TAG_NAME=$(cat package.json| jq -r .version)" >> $GITHUB_OUTPUT
       id: version
