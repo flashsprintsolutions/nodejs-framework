@@ -33,6 +33,12 @@ export class Application extends Base {
         this.errorHandler(error, request, response, nextFunction);
       });
       this.registerApplicationRoutes(applicationConfig.app, routes, applicationConfig.routeValidator, applicationConfig.pathPrefix);
+      applicationConfig.app.use((
+        error: Error,
+        request: Request,
+        response: Response,
+        nextFunction: NextFunction,
+      ): void => this.errorHandler(error, request, response, nextFunction));
       this.afterRouteRegistration(applicationConfig.app);
     }
     this.startServer(applicationConfig);

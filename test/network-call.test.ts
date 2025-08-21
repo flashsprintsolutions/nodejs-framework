@@ -44,7 +44,7 @@ describe('Application', () => {
       } catch (_error) {
         const error = _error as Error;
         expect(error.message).toEqual('400 - Internal Server error. error triggered');
-        expect(getCallCount()).toEqual({ Sub1ControllerError: 1, RouteValidatorMiddleware: 1 });
+        expect(getCallCount()).toEqual({ Sub1ControllerError: 1, RouteValidatorMiddleware: 1, errorHandler: 1 });
       }
     });
 
@@ -174,6 +174,24 @@ describe('Application', () => {
         RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
+      });
+    });
+
+    it('Should call the application error handler', async () => {
+      try {
+        await httpClient.rp({
+          method: 'PUT',
+          uri: 'http://localhost:9000/error/route',
+          body: { body: 'test' },
+          responseJson: true,
+        });
+        throw new Error('should not reach here');
+      } catch (_error) {
+        const error = _error as Error;
+        expect(error.message).toEqual('400 - Internal Server error. error triggered');
+      }
+      expect(getCallCount()).toEqual({
+        errorHandler: 1,
       });
     });
   });
