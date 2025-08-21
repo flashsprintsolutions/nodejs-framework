@@ -7,7 +7,9 @@ on:
 
 jobs:
   npm-update:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    container:
+      image: ubuntu:24.04
     concurrency:
       group: ${{ github.event.number }}-npm-update
       cancel-in-progress: true
@@ -18,6 +20,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.pat_github}}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.x'
+          registry-url: 'https://registry.npmjs.org'
       - name: Node Version
         run: node -v
       - name: NPM Install
@@ -47,7 +54,9 @@ jobs:
           fi
 
   code-formatting:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    container:
+      image: ubuntu:24.04
     concurrency:
       group: ${{ github.event.number }}-code-formatting
       cancel-in-progress: true
@@ -58,6 +67,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.pat_github}}
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.x'
+          registry-url: 'https://registry.npmjs.org'
       - name: NPM Install
         run: npm ci
       - run: npm run lint
