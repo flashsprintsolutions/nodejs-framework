@@ -7,7 +7,7 @@ on:
 
 jobs:
   npm-update:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     concurrency:
       group: ${{ github.event.number }}-npm-update
       cancel-in-progress: true
@@ -47,7 +47,7 @@ jobs:
           fi
 
   code-formatting:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     concurrency:
       group: ${{ github.event.number }}-code-formatting
       cancel-in-progress: true

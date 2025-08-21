@@ -15,7 +15,7 @@ on:
 
 jobs:
   release-npm:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       id-token: write
@@ -48,7 +48,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   release-github:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: read
       id-token: write
