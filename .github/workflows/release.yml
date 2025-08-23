@@ -33,6 +33,7 @@ jobs:
     - name: Update package
       id: update_package
       run: |
+        git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
         git config --global user.email "yog27ray@example.com"
         git config --global user.name "Yogendra Singh"
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
@@ -84,6 +85,7 @@ jobs:
       - name: Update package
         id: update_package
         run: |
+          git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
           npm ci
           git config --global user.email "yog27ray@example.com"
           git config --global user.name "Yogendra Singh"
