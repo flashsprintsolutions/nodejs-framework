@@ -14,36 +14,6 @@ on:
           - major
 
 jobs:
-  release-npm:
-    runs-on: self-hosted
-    container:
-      image: flashsprintsolutions/ci-build:ubuntu-24.10
-    permissions:
-      contents: read
-      id-token: write
-    concurrency:
-      group: release-npm
-      cancel-in-progress: true
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.pat_github }}
-        ref: main
-    - name: Update package
-      id: update_package
-      run: |
-        npm ci
-        git config --global user.email "yog27ray@example.com"
-        git config --global user.name "Yogendra Singh"
-        VERSION=$(npm version ${{ github.event.inputs.increment-type }})
-        npm run build
-        cd dist
-        npm publish --access=public
-        cd ..
-        git push
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
   release-github:
     runs-on: self-hosted
     container:
@@ -95,3 +65,35 @@ jobs:
         npm publish --registry=https://npm.pkg.github.com/
       env:
         NODE_AUTH_TOKEN: ${{secrets.pat_github}}
+
+  release-npm:
+    runs-on: self-hosted
+    needs: [release-github]
+    container:
+      image: flashsprintsolutions/ci-build:ubuntu-24.10
+    permissions:
+      contents: read
+      id-token: write
+    concurrency:
+      group: release-npm
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.pat_github }}
+          ref: main
+      - name: Update package
+        id: update_package
+        run: |
+          npm ci
+          git config --global user.email "yog27ray@example.com"
+          git config --global user.name "Yogendra Singh"
+          VERSION=$(npm version ${{ github.event.inputs.increment-type }})
+          npm run build
+          cd dist
+          npm publish --access=public
+          cd ..
+          git push
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
