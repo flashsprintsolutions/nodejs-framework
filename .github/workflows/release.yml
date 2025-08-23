@@ -40,7 +40,6 @@ jobs:
         npm ci
         npm run build
         cd dist
-        cd ..
       env:
         NODE_AUTH_TOKEN: ${{ secrets.pat_github }}  # classic PAT with write:packages, read:packages, repo
     - name: Set env
