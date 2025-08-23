@@ -36,6 +36,8 @@ jobs:
         git config --global --add safe.directory /__w/${{ github.event.repository.name }}/${{ github.event.repository.name }}
         git config --global user.email "yog27ray@example.com"
         git config --global user.name "Yogendra Singh"
+        git tag -l | xargs -r -n1 git tag -d
+        git fetch origin --prune --prune-tags --tags
         VERSION=$(npm version ${{ github.event.inputs.increment-type }})
         echo "\n//npm.pkg.github.com/:_authToken=${{ secrets.pat_github}}" >> .npmrc
         npm ci
@@ -89,6 +91,8 @@ jobs:
           npm ci
           git config --global user.email "yog27ray@example.com"
           git config --global user.name "Yogendra Singh"
+          git tag -l | xargs -r -n1 git tag -d
+          git fetch origin --prune --prune-tags --tags
           VERSION=$(npm version ${{ github.event.inputs.increment-type }})
           npm run build
           cd dist
