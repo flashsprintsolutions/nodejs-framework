@@ -17,7 +17,7 @@ jobs:
   release-npm:
     runs-on: self-hosted
     container:
-      image: ubuntu:24.04
+      image: flashsprintsolutions/ci-build:ubuntu-24.10
     permissions:
       contents: read
       id-token: write
@@ -29,11 +29,6 @@ jobs:
       with:
         token: ${{ secrets.pat_github }}
         ref: main
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '23.x'
-        registry-url: 'https://registry.npmjs.org'
     - name: Update package
       id: update_package
       run: |
@@ -52,7 +47,7 @@ jobs:
   release-github:
     runs-on: self-hosted
     container:
-      image: ubuntu:24.04
+      image: flashsprintsolutions/ci-build:ubuntu-24.10
     permissions:
       contents: read
       id-token: write
@@ -64,12 +59,6 @@ jobs:
       with:
         token: ${{ secrets.pat_github }}
         ref: main
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        registry-url: 'https://npm.pkg.github.com'
-        scope: '@flashsprintsolutions'
 
     - name: Update package
       id: update_package
