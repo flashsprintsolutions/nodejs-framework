@@ -57,12 +57,12 @@ jobs:
       id: version
     - name: Create Release
       id: create_release
-      uses: comnoco/create-release@v2
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.pat_github}}
       with:
         tag_name: ${{ steps.version.outputs.TAG_NAME }}
-        release_name: Release ${{ steps.version.outputs.TAG_NAME }}
+        name: Release ${{ steps.version.outputs.TAG_NAME }}
         body: |
           Release v-${{ steps.version.outputs.TAG_NAME }}
         draft: false
