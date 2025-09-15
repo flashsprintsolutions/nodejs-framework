@@ -59,6 +59,9 @@ export function transformDateRequest(input: unknown): unknown {
   if (input === null || input === undefined) {
     return input;
   }
+  if (input instanceof Array) {
+    return input.map((each) => transformDateRequest(each));
+  }
   if (typeof input !== 'object') {
     return input;
   }
@@ -73,6 +76,9 @@ export function transformDateRequest(input: unknown): unknown {
 }
 
 function transformDateResponse(input: unknown): unknown {
+  if (input instanceof Array) {
+    return input.map((each) => transformDateResponse(each));
+  }
   if (input instanceof Date) {
     return { __type: 'Date', iso: input.toISOString() };
   }

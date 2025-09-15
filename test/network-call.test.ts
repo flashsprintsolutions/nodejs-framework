@@ -11,7 +11,7 @@ describe('Application', () => {
         uri: 'http://localhost:9000/v1/route1',
         responseJson: true,
       });
-      expect(response).toEqual({ status: 'success', data: { success: 'V1ControllerRoute1' } });
+      expect(response).toEqual({ status: 'success', data: { success: 'V1ControllerRoute1', items: [{ id: 1 }, { id: 2 }] } });
       expect(getCallCount()).toEqual({
         V1ControllerRoute1: 1,
         RouteValidatorMiddleware: 1,
