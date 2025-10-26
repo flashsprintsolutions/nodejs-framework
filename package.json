@@ -4,7 +4,9 @@
   "main": "index.js",
   "description": "",
   "scripts": {
-    "lint": "node_modules/eslint/bin/eslint.js src",
+    "tsc": "mkdir -p dist && rm -rf dist && node_modules/typescript/bin/tsc -p ./",
+    "eslint": "node_modules/eslint/bin/eslint.js src",
+    "lint": "npm run eslint && npm run tsc",
     "test": "jest",
     "jest:coverage": "jest --coverage",
     "build": "mkdir -p dist; cd dist; rm -rf *;rm -rf .github; cd ..;node_modules/typescript/bin/tsc -p ./tsconfig-build.json; cp package*.json dist; cp -r .github dist/;"

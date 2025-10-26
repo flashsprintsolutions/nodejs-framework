@@ -1,4 +1,4 @@
-import e, { Express, Response, Request, NextFunction } from 'express';
+import { Express, Response, Request, NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import { Application } from '../../src/declarations/application';
 import { application } from '../../src/annotation/application';
@@ -15,7 +15,6 @@ import { incrementCallCount } from './visit-count';
 class App extends Application {
   beforeRouteRegistration(app: Express): void  {
     app.use((req, res, next) => {
-      console.log(req.method, req.path);
       if (req.path === '/error/route') {
         next(Error('error triggered'));
         return;
