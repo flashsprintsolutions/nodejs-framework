@@ -1,6 +1,6 @@
 {
   "name": "@flashsprintsolutions/nodejs-framework",
-  "version": "1.0.25",
+  "version": "1.1.0",
   "main": "index.js",
   "description": "",
   "scripts": {
@@ -21,7 +21,7 @@
   "homepage": "https://github.com/flashsprintsolutions/nodejs-framework#readme",
   "dependencies": {
     "@inversifyjs/common": "1.5.2",
-    "inversify": "7.10.0",
+    "inversify": "7.10.3",
     "reflect-metadata": "0.2.2",
     "rfdc": "1.4.1",
     "uuid": "13.0.0"
@@ -31,22 +31,22 @@
   },
   "devDependencies": {
     "@types/debug": "4.1.12",
-    "@types/express": "5.0.3",
+    "@types/express": "5.0.4",
     "@types/jest": "30.0.0",
     "@types/node-fetch": "2.6.12",
-    "@typescript-eslint/eslint-plugin": "8.41.0",
-    "@typescript-eslint/parser": "8.41.0",
+    "@typescript-eslint/eslint-plugin": "8.45.0",
+    "@typescript-eslint/parser": "8.45.0",
     "body-parser": "2.2.0",
     "@swc/core": "1.13.20",
     "@swc/jest": "0.2.39",
-    "eslint": "9.34.0",
+    "eslint": "9.36.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-typescript": "0.14.0",
-    "jest": "30.1.3",
+    "jest": "30.2.0",
     "jest-simple-dot-reporter": "1.0.5",
     "node-fetch": "2.7.0",
     "ts-node": "10.9.2",
-    "typescript": "5.9.2"
+    "typescript": "5.9.3"
   }
 }
