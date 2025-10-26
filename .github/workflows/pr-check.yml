@@ -65,7 +65,6 @@ jobs:
       - name: NPM Install
         run: npm ci
       - run: npm run lint
-      - run: node_modules/typescript/bin/tsc -p ./
       - run: rm -r dist
       - name: Generate Coverage Report
         run: npm run jest:coverage

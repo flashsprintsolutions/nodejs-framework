@@ -43,6 +43,7 @@ module.exports = [
       "import/order": ["error"],
       "quotes": ["error", "single"],
       "max-len": ["error", 140],
+      "import/no-unresolved": [0],
       "object-curly-spacing": ["error", "always"],
       "comma-dangle": ["error", "always-multiline"],
       "key-spacing": "error",

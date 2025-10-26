@@ -3,6 +3,7 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
+    "noUnusedLocals": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
@@ -25,7 +26,9 @@
     "noImplicitAny": false,
     "strictNullChecks": false,
     "strictFunctionTypes": false,
-    "noImplicitThis": false
+    "noImplicitThis": false,
+    "inlineSources": true,
+    "sourceRoot": "/"
   },
   "exclude": [
     "node_modules",
