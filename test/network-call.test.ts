@@ -31,6 +31,7 @@ describe('Application', () => {
         ControllerService1ServiceRoute1Call: 1,
         RouteValidatorMiddleware: 1,
         Service1ServiceDummyCall: 1,
+        FirstMiddlewareHandler: 1,
       });
     });
 
@@ -44,7 +45,7 @@ describe('Application', () => {
       } catch (_error) {
         const error = _error as Error;
         expect(error.message).toEqual('400 - Internal Server error. error triggered');
-        expect(getCallCount()).toEqual({ Sub1ControllerError: 1, RouteValidatorMiddleware: 1, errorHandler: 1 });
+        expect(getCallCount()).toEqual({ Sub1ControllerError: 1, RouteValidatorMiddleware: 1, errorHandler: 1, FirstMiddlewareHandler: 1 });
       }
     });
 
@@ -98,6 +99,7 @@ describe('Application', () => {
         RouteValidatorMiddleware: 1,
         ControllerService1ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
+        FirstMiddlewareHandler: 1,
       });
     });
 
@@ -136,6 +138,7 @@ describe('Application', () => {
         RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
+        FirstMiddlewareHandler: 1,
       });
     });
 
@@ -155,6 +158,7 @@ describe('Application', () => {
         RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service1ServiceDummyCall: 1,
+        FirstMiddlewareHandler: 1,
       });
     });
 
@@ -174,6 +178,7 @@ describe('Application', () => {
         RouteValidatorMiddleware: 1,
         ControllerService2ServiceRoute1Call: 1,
         Service2ServiceDummyCall: 1,
+        FirstMiddlewareHandler: 1,
       });
     });
 

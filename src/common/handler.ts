@@ -97,15 +97,17 @@ function transformDateResponse(input: unknown): unknown {
 
 export function generateControllerRoutes(
   CurrentRoute: (new() => Route) & { classId?: string; },
-  errorHandler: ErrorHandler): Array<RouteType> {
+  errorHandler: ErrorHandler,
+  parentMiddlewares: Array<new () => Middleware> = []): Array<RouteType> {
   const currentRoute = getContainer('route').get<RouteWithCompileDate>(CurrentRoute) as unknown as {
     controller: { routes: Array<RouteType & { middlewareClass?: Array<new () => Middleware> }> };
   };
   const controllerRoutes = currentRoute.controller.routes || [];
   const routeConfig = getConfig(CurrentRoute.classId) as unknown as  RouteConfig<new() => Route>;
   const subRoutes = routeConfig.subRoutes || [];
+  const routeMiddleware = [...parentMiddlewares, ...(routeConfig.middleware || [])];
   const routes = subRoutes.flatMap(({ path, route }) => {
-    const subRoutes = generateControllerRoutes(route, errorHandler);
+    const subRoutes = generateControllerRoutes(route, errorHandler, routeMiddleware);
     subRoutes.forEach((subRoute) => {
       subRoute.setPath(`${path}${subRoute.path}`);
     });
@@ -116,7 +118,7 @@ export function generateControllerRoutes(
     method: routeType.method,
     classMethod: routeType.classMethod,
     requestHandler: [
-      ...createMiddlewareHandler(routeConfig.middleware || []),
+      ...createMiddlewareHandler(routeMiddleware),
       ...routeType.requestHandler,
       async (request: Request, response: Response, next: NextFunction): Promise<void> => {
         try {
