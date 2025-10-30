@@ -39,7 +39,7 @@
     "@typescript-eslint/eslint-plugin": "8.46.2",
     "@typescript-eslint/parser": "8.46.2",
     "body-parser": "2.2.0",
-    "@swc/core": "1.13.20",
+    "@swc/core": "1.14.0",
     "@swc/jest": "0.2.39",
     "eslint": "9.38.0",
     "eslint-plugin-import": "2.32.0",
