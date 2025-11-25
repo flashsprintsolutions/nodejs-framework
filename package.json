@@ -38,7 +38,7 @@
     "@types/node-fetch": "2.6.12",
     "@typescript-eslint/eslint-plugin": "8.46.2",
     "@typescript-eslint/parser": "8.46.2",
-    "body-parser": "2.2.0",
+    "body-parser": "2.2.1",
     "@swc/core": "1.13.20",
     "@swc/jest": "0.2.39",
     "eslint": "9.38.0",
